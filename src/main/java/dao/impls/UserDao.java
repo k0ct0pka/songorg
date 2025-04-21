@@ -65,7 +65,8 @@ public class UserDao implements BaseDao<User> {
         try(Session session = sessionFactory.openSession()) {
             user = (User) session
                     .createQuery("from User where email = :email", User.class)
-                    .setParameter("email", email);
+                    .setParameter("email", email)
+                    .getSingleResult();
         } catch (HibernateException e) {
             throw new RuntimeException("Can't find user with email: " + email, e);
         }

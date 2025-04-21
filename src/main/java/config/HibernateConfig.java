@@ -1,5 +1,6 @@
 package config;
 
+import entity.User;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
@@ -17,6 +18,9 @@ public class HibernateConfig {
                 .setProperty(AvailableSettings.SHOW_SQL,true)
                 .setProperty(AvailableSettings.HIGHLIGHT_SQL,true)
                 .setProperty(AvailableSettings.FORMAT_SQL,true)
+                .setProperty(AvailableSettings.CURRENT_SESSION_CONTEXT_CLASS,"thread")
+                .setProperty(AvailableSettings.DEFAULT_SCHEMA, "reverie")
+                .addAnnotatedClass(User.class)
                 .buildSessionFactory();
     }
 }
