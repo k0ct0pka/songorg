@@ -1,6 +1,12 @@
 package config;
 
+import entity.Author;
+import entity.Song;
 import entity.User;
+import entity.embeddableIds.AuthorSongId;
+import entity.embeddableIds.UserSongId;
+import entity.many_to_many_tables.AuthorSong;
+import entity.many_to_many_tables.UserSong;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
@@ -21,6 +27,12 @@ public class HibernateConfig {
                 .setProperty(AvailableSettings.CURRENT_SESSION_CONTEXT_CLASS,"thread")
                 .setProperty(AvailableSettings.DEFAULT_SCHEMA, "reverie")
                 .addAnnotatedClass(User.class)
+                .addAnnotatedClass(Song.class)
+                .addAnnotatedClass(Author.class)
+                .addAnnotatedClass(UserSong.class)
+                .addAnnotatedClass(AuthorSongId.class)
+                .addAnnotatedClass(AuthorSong.class)
+                .addAnnotatedClass(UserSongId.class)
                 .buildSessionFactory();
     }
 }

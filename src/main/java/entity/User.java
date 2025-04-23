@@ -1,7 +1,10 @@
 package entity;
 
+import entity.embeddableIds.UserSongId;
+import entity.many_to_many_tables.UserSong;
 import jakarta.persistence.*;
 import lombok.*;
+import java.util.List;
 import lombok.experimental.FieldDefaults;
 
 @Builder
@@ -21,4 +24,6 @@ public class User {
     String email;
     @Column
     String password;
+    @OneToMany(mappedBy = "user")
+    List<UserSong> userSongs;
 }

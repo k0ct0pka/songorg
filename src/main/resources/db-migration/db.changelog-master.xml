@@ -9,4 +9,5 @@
 
     <include file="initialize_table_user.sql" relativeToChangelogFile="true"/>
     <include file="change_id_all.sql" relativeToChangelogFile="true"/>
+    <include file="initiallize_authorSong_table.sql" relativeToChangelogFile="true"/>
 </databaseChangeLog>
