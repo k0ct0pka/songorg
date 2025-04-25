@@ -1,10 +1,15 @@
 package dto;
 
 
+import entity.many_to_many_tables.UserSong;
+
+import java.util.List;
+
 public class UserDto {
 
     private String name;
     private String email;
+    private List<UserSong> userSongs;
 
     public UserDto() {
     }
@@ -55,5 +60,13 @@ public class UserDto {
 
     public String toString() {
         return "UserDto(name=" + this.getName() + ", email=" + this.getEmail() + ")";
+    }
+
+    public List<UserSong> getUserSongs() {
+        return this.userSongs;
+    }
+
+    public void setUserSongs(List<UserSong> userSongs) {
+        this.userSongs = userSongs;
     }
 }
