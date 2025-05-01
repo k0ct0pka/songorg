@@ -4,10 +4,7 @@ import entity.Author;
 import entity.Song;
 import entity.embeddableIds.AuthorSongId;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Data
@@ -15,6 +12,7 @@ import lombok.experimental.FieldDefaults;
 @Table(name = "\"AuthorSong\"")
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AuthorSong {
     @EmbeddedId

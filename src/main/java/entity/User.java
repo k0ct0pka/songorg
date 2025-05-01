@@ -19,19 +19,14 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private
     Integer id;
     @Column(name = "name")
-    private
     String name;
     @Column(name = "email")
-    private
     String email;
     @Column
-    private
     String password;
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     List<UserSong> userSongs;
 
     public Integer getId() {

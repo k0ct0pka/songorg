@@ -2,6 +2,8 @@ package dao.impls;
 
 import dao.BaseDao;
 import entity.User;
+import entity.embeddableIds.UserSongId;
+import entity.many_to_many_tables.UserSong;
 import lombok.AllArgsConstructor;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -71,5 +73,18 @@ public class UserDao implements BaseDao<User> {
             throw new RuntimeException("Can't find user with email: " + email, e);
         }
         return user;
+    }
+
+    public void likeSong(UserSong userSong) {
+        sessionFactory.inTransaction(
+                session -> {
+                    UserSong isExist = session.find(UserSong.class, userSong.getUserSongId());
+                    if(isExist != null) {
+                        session.remove(isExist);
+                    } else{
+                        session.merge(userSong);
+                    }
+                }
+        );
     }
 }

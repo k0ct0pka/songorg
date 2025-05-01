@@ -2,6 +2,8 @@ package listener;
 
 import config.HibernateConfig;
 import config.LiquibaseConfig;
+import dao.impls.AuthorDao;
+import dao.impls.SongDao;
 import dao.impls.UserDao;
 import factory.UserFactory;
 import jakarta.servlet.ServletContext;
@@ -25,7 +27,12 @@ import org.hibernate.SessionFactory;
 import org.mapstruct.factory.Mappers;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.WebApplicationInitializer;
+import service.AuthorService;
 import service.AuthorizationService;
+import service.HomeService;
+import service.LikeService;
+import service.entityService.SongService;
+import service.entityService.UserService;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -35,7 +42,11 @@ import java.util.Map;
 @WebListener
 @FieldDefaults(level = AccessLevel.PUBLIC, makeFinal = true)
 public class ContextLoader implements ServletContextListener {
-    public static String AUTHORIZATION_SERVICE = "authorizationService";
+    public static final String AUTHORIZATION_SERVICE = "authorizationService";
+    public static final String HOME_SERVICE = "homeService";
+    public static final String USER_SERVICE = "userService";
+    public static final String LIKE_SERVICE = "likeService";
+    public static final String AUTHOR_SERVICE = "authorService";
 
     @Override
     @SneakyThrows
@@ -47,9 +58,20 @@ public class ContextLoader implements ServletContextListener {
         UserFactory userFactory = new UserFactory();
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         UserMapper userMapper = Mappers.getMapper(UserMapper.class);
+        SongDao songDao = new SongDao(sessionFactory);
+        AuthorDao authorDao = new AuthorDao(sessionFactory);
+        SongService songService = new SongService(songDao);
         AuthorizationService authorizationService = new AuthorizationService(userDao,userFactory,passwordEncoder,userMapper);
+        HomeService homeService = new HomeService(songService);
+        UserService userService = new UserService(userDao,userMapper);
+        LikeService likeService = new LikeService(songService,userDao,userService);
+        AuthorService authorService = new AuthorService(authorDao);
         Map<String,Object> objects = new HashMap<>();
         objects.put(AUTHORIZATION_SERVICE, authorizationService);
+        objects.put(HOME_SERVICE, homeService);
+        objects.put(USER_SERVICE, userService);
+        objects.put(LIKE_SERVICE, likeService);
+        objects.put(AUTHOR_SERVICE,authorService);
         for (Map.Entry<String, Object> entry : objects.entrySet()) {
             sce.getServletContext().setAttribute(entry.getKey(), entry.getValue());
         }

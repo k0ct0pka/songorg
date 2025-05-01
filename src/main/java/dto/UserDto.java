@@ -6,7 +6,7 @@ import entity.many_to_many_tables.UserSong;
 import java.util.List;
 
 public class UserDto {
-
+    private Integer id;
     private String name;
     private String email;
     private List<UserSong> userSongs;
@@ -68,5 +68,13 @@ public class UserDto {
 
     public void setUserSongs(List<UserSong> userSongs) {
         this.userSongs = userSongs;
+    }
+
+    public Integer getId() {
+        return this.id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

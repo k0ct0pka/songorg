@@ -5,26 +5,26 @@ import entity.Song;
 import entity.User;
 import entity.embeddableIds.UserSongId;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Data
 @Entity
 @Table(name = "\"UserSong\"")
 @AllArgsConstructor
+@Builder
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserSong {
     @EmbeddedId
     UserSongId userSongId;
     @MapsId("userId")
-    @ManyToOne(cascade = CascadeType.REMOVE, targetEntity = User.class)
+    @ManyToOne( targetEntity = User.class)
+    @JoinColumn(name = "user_id")
     User user;
 
     @MapsId("songId")
-    @ManyToOne(cascade = CascadeType.REMOVE, targetEntity = Song.class)
+    @ManyToOne(targetEntity = Song.class)
+    @JoinColumn(name = "song_id")
     Song song;
 }
