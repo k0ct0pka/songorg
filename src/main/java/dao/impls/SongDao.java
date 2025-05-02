@@ -72,4 +72,15 @@ public class SongDao implements BaseDao<Song> {
         );
         return recommendedSongs.get();
     }
+    public List<Song> getSongsByGenre(String genre){
+        List<Song> songs;
+        try(Session session = sessionFactory.openSession()) {
+            songs = session.createQuery("from Song s where s.genre = :genre",Song.class)
+                    .setParameter("genre", genre)
+                    .getResultList();
+        } catch (HibernateException e) {
+            throw new RuntimeException("Can't find song with genre: " + genre, e);
+        }
+        return songs;
+    }
 }

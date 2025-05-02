@@ -8,26 +8,22 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import listener.ContextLoader;
-import service.entityService.AuthorService;
+import service.entityService.GenreService;
 
 import java.io.IOException;
+@WebServlet(Route.GENRE)
+public class GenreServlet extends HttpServlet {
 
-@WebServlet(Route.AUTHOR)
-public class AuthorServlet extends HttpServlet {
-    private AuthorService authorService;
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
-    }
+    private GenreService genreService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        authorService.getAuthorInfo(req);
-        req.getRequestDispatcher(Route.getJSP(Route.AUTHOR)).forward(req, resp);
+        genreService.getSongsByGenre(req);
+        req.getRequestDispatcher(Route.getJSP(Route.GENRE)).forward(req, resp);
     }
 
     @Override
     public void init(ServletConfig config) throws ServletException {
-        authorService = (AuthorService) config.getServletContext().getAttribute(ContextLoader.AUTHOR_SERVICE);
+        genreService = (GenreService) config.getServletContext().getAttribute(ContextLoader.GENRE_SERVICE);
     }
 }

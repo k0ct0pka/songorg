@@ -1,6 +1,5 @@
-package service;
+package service.entityService;
 
-import dao.BaseDao;
 import dao.impls.AuthorDao;
 import entity.Author;
 import jakarta.servlet.http.HttpServletRequest;

@@ -10,6 +10,7 @@ public class Route {
     public static final String LOGOUT = "/logout";
     public static final String LIKE_SONG = "/like-song";
     public static final String AUTHOR = "/author";
+    public static final String GENRE = "/genre";
     public static final String[] ROUTES_FOR_UPDATE = {"/like-song","/home"};
     public static String getJSP(String route){
         return route + ".jsp";

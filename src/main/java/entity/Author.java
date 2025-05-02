@@ -21,7 +21,7 @@ public class Author {
     String name;
     @Column(name = "concerts_link")
     String concertsLink;
-    @OneToMany(mappedBy = "author")
+    @OneToMany(mappedBy = "author",fetch = FetchType.EAGER)
     List<AuthorSong> authorSongs;
 
 }

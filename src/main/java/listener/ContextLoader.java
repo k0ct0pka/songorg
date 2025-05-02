@@ -6,7 +6,6 @@ import dao.impls.AuthorDao;
 import dao.impls.SongDao;
 import dao.impls.UserDao;
 import factory.UserFactory;
-import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.ServletException;
@@ -14,9 +13,7 @@ import jakarta.servlet.annotation.WebListener;
 import liquibase.Contexts;
 import liquibase.LabelExpression;
 import liquibase.Liquibase;
-import liquibase.Scope;
 import liquibase.changelog.DatabaseChangeLog;
-import liquibase.configuration.LiquibaseConfiguration;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.resource.ClassLoaderResourceAccessor;
 import lombok.AccessLevel;
@@ -26,11 +23,11 @@ import mapper.UserMapper;
 import org.hibernate.SessionFactory;
 import org.mapstruct.factory.Mappers;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.WebApplicationInitializer;
-import service.AuthorService;
+import service.entityService.AuthorService;
 import service.AuthorizationService;
 import service.HomeService;
 import service.LikeService;
+import service.entityService.GenreService;
 import service.entityService.SongService;
 import service.entityService.UserService;
 
@@ -47,6 +44,7 @@ public class ContextLoader implements ServletContextListener {
     public static final String USER_SERVICE = "userService";
     public static final String LIKE_SERVICE = "likeService";
     public static final String AUTHOR_SERVICE = "authorService";
+    public static final String GENRE_SERVICE = "genreService";
 
     @Override
     @SneakyThrows
@@ -65,6 +63,7 @@ public class ContextLoader implements ServletContextListener {
         HomeService homeService = new HomeService(songService);
         UserService userService = new UserService(userDao,userMapper);
         LikeService likeService = new LikeService(songService,userDao,userService);
+        GenreService genreService = new GenreService(songDao);
         AuthorService authorService = new AuthorService(authorDao);
         Map<String,Object> objects = new HashMap<>();
         objects.put(AUTHORIZATION_SERVICE, authorizationService);
@@ -72,6 +71,7 @@ public class ContextLoader implements ServletContextListener {
         objects.put(USER_SERVICE, userService);
         objects.put(LIKE_SERVICE, likeService);
         objects.put(AUTHOR_SERVICE,authorService);
+        objects.put(GENRE_SERVICE,genreService);
         for (Map.Entry<String, Object> entry : objects.entrySet()) {
             sce.getServletContext().setAttribute(entry.getKey(), entry.getValue());
         }

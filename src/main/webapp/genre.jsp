@@ -2,10 +2,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html lang="en">
 <head>
-    <title>Author's Songs</title>
+    <title>Post-Punk Music Hub</title>
     <style>
         body {
-            background-color: #121212;
+            background-color: #121212; /* Тёмный фон */
             color: #e0e0e0;
             font-family: 'Courier New', Courier, monospace;
             margin: 0;
@@ -15,7 +15,7 @@
             text-align: center;
             padding: 20px;
             font-size: 2em;
-            color: #ff007f;
+            color: #ff007f; /* Яркий розовый */
         }
         .song-table {
             margin: 30px auto;
@@ -36,21 +36,29 @@
             font-size: 1.2em;
         }
         .star {
+
             cursor: pointer;
             font-size: 24px;
+
             transition: color 0.3s ease;
-            color: #FFD700;
+
+
+            color: #FFD700; /* золотые звёзды */
         }
         .star:hover {
             color: orange;
+        }
+        .button-container {
+            margin: 20px auto;
+            text-align: center;
         }
         .btn {
             background-color: transparent;
             color: #ff007f;
             border: 2px solid #ff007f;
-            padding: 6px 14px;
-            margin: 2px;
-            font-size: 0.9em;
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 1em;
             cursor: pointer;
             transition: 0.3s;
         }
@@ -58,21 +66,24 @@
             background-color: #ff007f;
             color: #121212;
         }
+        .search-bar {
+            margin-bottom: 20px;
+        }
+        .search-input {
+            padding: 10px;
+            font-size: 1em;
+            width: 250px;
+            border: 2px solid #ff007f;
+            background-color: #1e1e1e;
+            color: #e0e0e0;
+            border-radius: 5px;
+        }
     </style>
 </head>
 
 <body>
-<div style="margin: 30px auto; width: 50%; background-color: #1e1e1e; padding: 20px; border-radius: 10px; border: 2px solid #ff007f; text-align: center;">
-    <h2 style="color: #ff007f; margin-bottom: 10px;">★ About the Author ★</h2>
-    <p><strong>Name:</strong> ${author.name}</p>
-    <p><strong>Concerts:</strong>
-        <a href="${author.concertsLink}" target="_blank" style="color: #00ffff;">
-            ${author.concertsLink}
-        </a>
-    </p>
-    <p><strong>Number Listeners:</strong> ${countListeners}</p>
-</div>
-<header>★ Songs by Author ★</header>
+<header>★ ${genre} songs ★</header>
+
 
 <table class="song-table">
     <thead>
@@ -81,37 +92,44 @@
         <th>Song</th>
         <th>Artist</th>
         <th>Genre</th>
-        <th>Added By</th>
+        <th>Added By User:</th>
         <th>★</th>
     </tr>
     </thead>
     <tbody>
-    <c:forEach var="as" items="${author.authorSongs}">
-
+    <c:forEach var="song" items="${songsByGenre}">
         <tr>
-            <td><a href="${as.song.link}"> -> </a></td>
-            <td>${as.song.name}</td>
+            <td><a href="${song.link}"> -> </a></td>
+            <td>${song.name}</td>
             <td>
-                <c:forEach var="authorSong" items="${as.song.authorSongs}">
-                    <form action="${pageContext.request.contextPath}/author" method="get" style="display:inline;">
+                <c:forEach var="authorSong" items="${song.authorSongs}">
+
+                    <form action="${pageContext.request.contextPath}/author" method="get">
                         <input type="hidden" name="aut_id" value="${authorSong.author.id}">
                         <input type="submit" value="${authorSong.author.name}" class="btn">
                     </form>
                 </c:forEach>
             </td>
+
             <td>
                 <form action="${pageContext.request.contextPath}/genre" method="get">
-                    <input type="hidden" name="genre" value="${as.song.genre}">
-                    <input type="submit" value="${as.song.genre}" class="btn">
-                </form>
-            </td>
-            <td>${as.song.user.name}</td>
-            <td class="star" id="star${as.song.id}" onclick="likeSong(${as.song.id})">☆</td>
+                    <input type="hidden" name="genre" value="${song.genre}">
+                    <input type="submit" value="${song.genre}" class="btn">
+                </form></td>
+            <td>${song.user.name}</td>
+            <td class="star" id="star${song.id}" onclick="likeSong(${song.id})">☆</td>
         </tr>
     </c:forEach>
     </tbody>
 </table>
 
-<script src="./static/likeScript.js"></script>
+<div class="button-container">
+
+    <form action="${pageContext.request.contextPath}/home">
+        <input type="submit" class="btn" value="Return">
+    </form>
+</div>
+
+<script src = "./static/likeScript.js"></script>
 </body>
 </html>
