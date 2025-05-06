@@ -4,6 +4,7 @@ import dao.impls.AuthorDao;
 import entity.Author;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
+import java.util.List;
 
 @AllArgsConstructor
 public class AuthorService {
@@ -14,5 +15,9 @@ public class AuthorService {
         Long count = authorDao.countListeners(autId);
         req.setAttribute("author", byId);
         req.setAttribute("countListeners", count);
+    }
+
+    public List<Author> getAuthors() {
+        return authorDao.findAll();
     }
 }

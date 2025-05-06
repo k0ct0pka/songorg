@@ -45,6 +45,7 @@ public class ContextLoader implements ServletContextListener {
     public static final String LIKE_SERVICE = "likeService";
     public static final String AUTHOR_SERVICE = "authorService";
     public static final String GENRE_SERVICE = "genreService";
+    public static final String SONG_SERVICE = "songService";
 
     @Override
     @SneakyThrows
@@ -72,6 +73,8 @@ public class ContextLoader implements ServletContextListener {
         objects.put(LIKE_SERVICE, likeService);
         objects.put(AUTHOR_SERVICE,authorService);
         objects.put(GENRE_SERVICE,genreService);
+        objects.put(SONG_SERVICE,songService);
+
         for (Map.Entry<String, Object> entry : objects.entrySet()) {
             sce.getServletContext().setAttribute(entry.getKey(), entry.getValue());
         }

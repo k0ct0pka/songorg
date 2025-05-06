@@ -75,8 +75,8 @@ public class SongDao implements BaseDao<Song> {
     public List<Song> getSongsByGenre(String genre){
         List<Song> songs;
         try(Session session = sessionFactory.openSession()) {
-            songs = session.createQuery("from Song s where s.genre = :genre",Song.class)
-                    .setParameter("genre", genre)
+            songs = session.createQuery("from Song s where lower(s.genre) = :genre",Song.class)
+                    .setParameter("genre", genre.toLowerCase())
                     .getResultList();
         } catch (HibernateException e) {
             throw new RuntimeException("Can't find song with genre: " + genre, e);

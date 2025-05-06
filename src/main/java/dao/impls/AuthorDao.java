@@ -2,13 +2,13 @@ package dao.impls;
 
 import dao.BaseDao;
 import entity.Author;
-import entity.User;
 import lombok.AllArgsConstructor;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.*;
 
 @AllArgsConstructor
 public class AuthorDao implements BaseDao<Author> {
@@ -37,6 +37,11 @@ public class AuthorDao implements BaseDao<Author> {
             throw new RuntimeException("Can't find author with id: " + id, e);
         }
         return author;
+    }
+    public List<Author> findAll() {
+        try(Session session = sessionFactory.openSession()) {
+            return session.createQuery("from Author",Author.class).getResultList();
+        }
     }
 
 
