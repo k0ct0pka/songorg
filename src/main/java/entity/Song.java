@@ -16,10 +16,10 @@ public class Song {
     private String name;
     private String link;
     private String genre;
-    @OneToMany(mappedBy = "song", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "song", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 
     private List<AuthorSong> authorSongs;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id")
     private User user;
 

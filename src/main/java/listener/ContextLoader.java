@@ -5,6 +5,7 @@ import config.LiquibaseConfig;
 import dao.impls.AuthorDao;
 import dao.impls.SongDao;
 import dao.impls.UserDao;
+import factory.SongFactory;
 import factory.UserFactory;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
@@ -55,17 +56,20 @@ public class ContextLoader implements ServletContextListener {
         SessionFactory sessionFactory = hibernateConfig.createSessionFactory();
         UserDao userDao = new UserDao(sessionFactory);
         UserFactory userFactory = new UserFactory();
+        SongFactory songFactory = new SongFactory();
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         UserMapper userMapper = Mappers.getMapper(UserMapper.class);
         SongDao songDao = new SongDao(sessionFactory);
         AuthorDao authorDao = new AuthorDao(sessionFactory);
-        SongService songService = new SongService(songDao);
         AuthorizationService authorizationService = new AuthorizationService(userDao,userFactory,passwordEncoder,userMapper);
-        HomeService homeService = new HomeService(songService);
         UserService userService = new UserService(userDao,userMapper);
-        LikeService likeService = new LikeService(songService,userDao,userService);
         GenreService genreService = new GenreService(songDao);
         AuthorService authorService = new AuthorService(authorDao);
+        SongService songService = new SongService(songDao,songFactory,authorService,userMapper);
+        LikeService likeService = new LikeService(songService,userDao,userService);
+        HomeService homeService = new HomeService(songService);
+
+
         Map<String,Object> objects = new HashMap<>();
         objects.put(AUTHORIZATION_SERVICE, authorizationService);
         objects.put(HOME_SERVICE, homeService);

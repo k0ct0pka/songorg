@@ -20,4 +20,8 @@ public class AuthorService {
     public List<Author> getAuthors() {
         return authorDao.findAll();
     }
+
+    public Author getAuthor(Integer integer) {
+        return authorDao.findById(integer);
+    }
 }

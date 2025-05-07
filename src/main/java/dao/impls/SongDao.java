@@ -20,7 +20,15 @@ public class SongDao implements BaseDao<Song> {
     private final SessionFactory sessionFactory;
     @Override
     public void save(Song o) {
-
+        sessionFactory.inTransaction(
+                session -> {
+                    try{
+                        session.merge(o);
+                    } catch (HibernateException e){
+                        throw new RuntimeException("Error creating user", e);
+                    }
+                }
+        );
     }
 
     @Override
@@ -83,4 +91,5 @@ public class SongDao implements BaseDao<Song> {
         }
         return songs;
     }
+
 }
