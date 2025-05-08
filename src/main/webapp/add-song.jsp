@@ -94,8 +94,10 @@
         <div class="button-row">
             <button type="button" onclick="selectAuthor()">Select author</button>
             <button type="button" onclick="addSong()">Add song</button>
+
         </div>
     </form>
+    <a href="${pageContext.request.contextPath}/add-author.jsp">Add Author</a>
 </div>
 
 <script>

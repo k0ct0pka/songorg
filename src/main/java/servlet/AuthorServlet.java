@@ -17,7 +17,8 @@ public class AuthorServlet extends HttpServlet {
     private AuthorService authorService;
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+        authorService.addNewAuthor(req);
+        resp.sendRedirect(Route.ADD_SONG);
     }
 
     @Override

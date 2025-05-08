@@ -15,7 +15,15 @@ public class AuthorDao implements BaseDao<Author> {
     private final SessionFactory sessionFactory;
     @Override
     public void save(Author o) {
-
+        sessionFactory.inTransaction(
+                session -> {
+                    try{
+                        session.persist(o);
+                    } catch (HibernateException e){
+                        throw new RuntimeException("Error creating author", e);
+                    }
+                }
+        );
     }
 
     @Override

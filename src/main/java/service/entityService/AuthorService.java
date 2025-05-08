@@ -24,4 +24,11 @@ public class AuthorService {
     public Author getAuthor(Integer integer) {
         return authorDao.findById(integer);
     }
+
+    public void addNewAuthor(HttpServletRequest req) {
+        String name = req.getParameter("name");
+        String concertsLink = req.getParameter("concertsLink");
+        Author author = Author.builder().name(name).concertsLink(concertsLink).build();
+        authorDao.save(author);
+    }
 }
