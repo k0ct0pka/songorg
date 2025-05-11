@@ -32,6 +32,6 @@ public class SongServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         songService.addSong(req);
-        req.getRequestDispatcher(Route.HOME).forward(req, resp);
+        resp.sendRedirect(Route.HOME);
     }
 }

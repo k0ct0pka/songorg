@@ -85,8 +85,9 @@
 <header>★ Your Recommendations ★</header>
 
 <div class="button-container search-bar">
-    <input type="text" class="search-input" placeholder="Search for a song...">
+    <input type="text" class="searchInput" placeholder="Search for a song...">
     <button class="btn">Search</button>
+    <div class="suggestions"></div>
 </div>
 
 <table class="song-table">
@@ -139,7 +140,99 @@
         <input type="submit" class="btn" value="Add Song">
     </form>
 </div>
-<script src = "./static/likeScript.js"></script>
+<script src = "./static/likeScript.js">
+
+</script>
+<script>
+    let timer = null;
+
+    document.getElementById("searchInput").addEventListener("input", function () {
+        const query = this.value.trim();
+
+        // Отменяем предыдущий запрос, если юзер продолжает печатать
+        clearTimeout(timer);
+
+        // Не ищем, если пусто
+        if (query.length === 0) {
+            document.getElementById("suggestions").style.display = "none";
+            return;
+        }
+        const params = new URLSearchParams();
+        params.append('query', query);
+
+
+
+        // Задержка перед запросом (debounce)
+        timer = setTimeout(() => {
+            fetch(`/home`
+            ,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: params
+                })
+                .then(response => response.json())
+                .then(data => showSuggestions(data))
+                .catch(err => console.error("Ошибка поиска:", err));
+        }, 300); // 300ms задержка
+    });
+
+    function showSuggestions(data) {
+        const container = document.getElementById("suggestions");
+        container.innerHTML = "";
+
+        const { authors, songs } = data;
+
+        if ((authors.length === 0) && (songs.length === 0)) {
+            container.style.display = "none";
+            return;
+        }
+
+        if (authors.length > 0) {
+            const authorTitle = document.createElement("div");
+            authorTitle.textContent = "Авторы:";
+            authorTitle.style.fontWeight = "bold";
+            authorTitle.style.padding = "5px";
+            container.appendChild(authorTitle);
+
+            authors.forEach(author => {
+                const div = document.createElement("div");
+                div.textContent = author.name;
+                div.style.padding = "5px";
+                div.style.cursor = "pointer";
+                div.onclick = () => {
+                    document.getElementById("searchInput").value = author.name;
+                    container.style.display = "none";
+                };
+                container.appendChild(div);
+            });
+        }
+
+        if (songs.length > 0) {
+            const songTitle = document.createElement("div");
+            songTitle.textContent = "Песни:";
+            songTitle.style.fontWeight = "bold";
+            songTitle.style.padding = "5px";
+            container.appendChild(songTitle);
+
+            songs.forEach(song => {
+                const div = document.createElement("div");
+                div.textContent = song.name;
+                div.style.padding = "5px";
+                div.style.cursor = "pointer";
+                div.onclick = () => {
+                    document.getElementById("searchInput").value = song.name;
+                    container.style.display = "none";
+                };
+                container.appendChild(div);
+            });
+        }
+
+        container.style.display = "block";
+    }
+</script>
 
 
 </body>
