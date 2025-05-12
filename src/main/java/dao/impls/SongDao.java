@@ -92,4 +92,16 @@ public class SongDao implements BaseDao<Song> {
         return songs;
     }
 
+    public List<Song> getSongsByName(String query) {
+        List<Song> songs;
+        try(Session session = sessionFactory.openSession()) {
+            songs = session.createQuery("from Song s where LOWER(s.name) LIKE LOWER(CONCAT('%', CONCAT(:q, '%')))",Song.class)
+                    .setMaxResults(5)
+                    .setParameter("q",query)
+                    .getResultList();
+        } catch (HibernateException e) {
+            songs = Collections.emptyList();
+        }
+        return songs;
+    }
 }

@@ -2,6 +2,8 @@ package entity;
 
 import java.util.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import entity.many_to_many_tables.AuthorSong;
 import jakarta.persistence.*;
 import lombok.*;
@@ -22,6 +24,7 @@ public class Author {
     @Column(name = "concerts_link")
     String concertsLink;
     @OneToMany(mappedBy = "author",fetch = FetchType.EAGER)
+    @JsonIgnore
     List<AuthorSong> authorSongs;
 
 }

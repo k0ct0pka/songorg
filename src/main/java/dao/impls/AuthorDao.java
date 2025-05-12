@@ -2,6 +2,7 @@ package dao.impls;
 
 import dao.BaseDao;
 import entity.Author;
+import entity.Song;
 import lombok.AllArgsConstructor;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -71,5 +72,18 @@ public class AuthorDao implements BaseDao<Author> {
                 }
         );
         return countListeners.get();
+    }
+
+    public List<Author> getByName(String query) {
+        List<Author> authors;
+        try(Session session = sessionFactory.openSession()) {
+            authors = session.createQuery("from Author a where LOWER(a.name) LIKE LOWER(CONCAT('%', CONCAT(:q, '%')))",Author.class)
+                    .setMaxResults(5)
+                    .setParameter("q",query)
+                    .getResultList();
+        } catch (HibernateException e) {
+            authors = Collections.emptyList();
+        }
+        return authors;
     }
 }

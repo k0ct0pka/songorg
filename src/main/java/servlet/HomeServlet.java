@@ -1,5 +1,6 @@
 package servlet;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import constants.Route;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
@@ -12,6 +13,7 @@ import service.HomeService;
 import service.entityService.SongService;
 
 import java.io.IOException;
+import java.util.Map;
 
 @WebServlet(Route.HOME)
 public class HomeServlet extends HttpServlet {
@@ -32,8 +34,11 @@ public class HomeServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+        Map<String, Object> suggestions = homeService.search(req);
 
+        resp.setContentType("application/json");
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.writeValue(resp.getWriter(), suggestions);
     }
 
 }

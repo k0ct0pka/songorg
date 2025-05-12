@@ -67,7 +67,7 @@ public class ContextLoader implements ServletContextListener {
         AuthorService authorService = new AuthorService(authorDao);
         SongService songService = new SongService(songDao,songFactory,authorService,userMapper);
         LikeService likeService = new LikeService(songService,userDao,userService);
-        HomeService homeService = new HomeService(songService);
+        HomeService homeService = new HomeService(songService,authorService);
 
 
         Map<String,Object> objects = new HashMap<>();

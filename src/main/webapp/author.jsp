@@ -111,6 +111,12 @@
     </c:forEach>
     </tbody>
 </table>
+<div class="button-container">
+
+    <form action="${pageContext.request.contextPath}/home">
+        <input type="submit" class="btn" value="Return">
+    </form>
+</div>
 
 <script src="./static/likeScript.js"></script>
 </body>

@@ -64,4 +64,8 @@ public class SongService {
         params.put(AUTHOR_IDS,request.getParameterValues(AUTHOR_IDS));
         return params;
     }
+
+    public List<Song> getSongByName(String query) {
+        return songDao.getSongsByName(query);
+    }
 }

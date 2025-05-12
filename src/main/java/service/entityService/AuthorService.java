@@ -31,4 +31,8 @@ public class AuthorService {
         Author author = Author.builder().name(name).concertsLink(concertsLink).build();
         authorDao.save(author);
     }
+
+    public List<Author> getAuthorsByName(String q) {
+        return authorDao.getByName(q);
+    }
 }

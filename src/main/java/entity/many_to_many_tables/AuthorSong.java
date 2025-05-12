@@ -1,5 +1,6 @@
 package entity.many_to_many_tables;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import entity.Author;
 import entity.Song;
 import entity.embeddableIds.AuthorSongId;
@@ -24,6 +25,7 @@ public class AuthorSong {
 
     @MapsId("songId")
     @ManyToOne(cascade = CascadeType.REMOVE, targetEntity = Song.class)
+    @JsonIgnore
     Song song;
 
 }
